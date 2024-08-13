@@ -1,11 +1,8 @@
 import React from "react";
-import { Button, Box, Alert, Paper, Grid, Switch, Snackbar, SnackbarCloseReason, AppBar, Toolbar, Typography} from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Allergen } from "../interfaces/allergen";
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import ImagesAllergens from "../images/ImagesAllergens";
 
 const UserFoodPreferencesMini: React.FC = () => {
     const navigate = useNavigate()

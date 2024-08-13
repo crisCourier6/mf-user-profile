@@ -7,7 +7,7 @@ import { Allergen } from "../interfaces/allergen";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import ImagesAllergens from "../images/ImagesAllergens";
 
-const UserFoodPreferences: React.FC = () => {
+const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarVisible }) => {
     const navigate = useNavigate()
     const { id } = useParams()
     const [userFoodPrefs, setUserFoodPrefs] = useState<Allergen[]>([]) 
@@ -115,6 +115,35 @@ const UserFoodPreferences: React.FC = () => {
             justifyContent="center"
             alignItems="stretch"
             sx={{width: "100vw", maxWidth:"500px", gap:"5px", flexWrap: "wrap", pb: 7}}>
+                <Box 
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    maxWidth: "500px",
+                    position: 'sticky',
+                    top: isAppBarVisible?"50px":"0px",
+                    width:"100%",
+                    transition: "top 0.3s",
+                    backgroundColor: 'primary.dark',
+                    zIndex: 100,
+                    boxShadow: 3,
+                    overflow: "hidden", 
+                    borderBottom: "5px solid",
+                    borderLeft: "5px solid",
+                    borderRight: "5px solid",
+                    borderColor: "secondary.main",
+                    boxSizing: "border-box"
+                  }}
+                >
+                    <Typography variant={isAppBarVisible?'h5':"h6"} width="100%" sx={{py:0.5}} color= "primary.contrastText">
+                        Mis preferencias alimenticias
+                    </Typography>
+                    <Typography variant="subtitle1"  width="100%" sx={{py:0.5, display: isAppBarVisible?"none":"block"}} color= "warning.main">
+                        Selecciona los alérgenos que deseas evitar
+                    </Typography>
+                </Box>
                 <Paper 
                 sx={{display: "flex", 
                     flexDirection: "row", 
@@ -125,8 +154,8 @@ const UserFoodPreferences: React.FC = () => {
                     bgcolor: "primary.main",
                     color: "primary.contrastText"}}>
                         <InfoOutlinedIcon sx={{height:"100%", bgcolor: "white", color:"primary.main", px:"5px"}}/>
-                        <Typography textAlign="justify" fontWeight="bold" fontSize={13} sx={{padding:1}}>
-                            Selecciona los alérgenos que deseas evitar 
+                        <Typography textAlign="justify" fontWeight="bold" fontSize={13} fontFamily="Montserrat" sx={{padding:1}}>
+                            Selecciona los <span style={{color: "orange"}}> alérgenos que deseas evitar </span> 
                             para que te alertemos de su presencia cuando 
                             veas el perfil de un alimento.
                         </Typography>
@@ -195,7 +224,6 @@ const UserFoodPreferences: React.FC = () => {
                                     sx={{
                                         fontWeight: "bold",
                                         fontSize: 16,
-                                        color:"secondary.contrastText"
                                     }}
                             >
                                 Guardar cambios
@@ -207,15 +235,20 @@ const UserFoodPreferences: React.FC = () => {
                     open = {successOpen}
                     autoHideDuration={3000}
                     onClose={handleSuccessClose}
-                    sx={{bottom: 60}}
+                    sx={{bottom: "10vh"}}
                     >
                     <Alert
                         severity="success"
                         variant="filled"
-                        
+                        action={
+                            <Button color="inherit" size="small" onClick={handleSuccessClose}>
+                              OK
+                            </Button>
+                        }
                         sx={{ width: '100%',
-                            color: "secondary.main",
-                            bgcolor: "secondary.contrastText"
+                            bgcolor: "secondary.main",
+                            color: "secondary.contrastText",
+                            
                          }}
                     >
                         Preferencias actualizadas!

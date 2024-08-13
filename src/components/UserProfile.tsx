@@ -1,9 +1,9 @@
 import React from "react";
-import { Button, Box, Alert, Paper, Grid} from '@mui/material';
+import { Button, Box, Alert, Paper, Grid, Typography} from '@mui/material';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import FoodPrefsIcon from "../../public/icons/preference.png"
+import FoodPrefsIcon from "../../public/icons/food-prefs.png"
 import FoodDiaryIcon from "../../public/icons/diary.png"
 import CommentsIcon from "../../public/icons/comments.png"
 import FoodEditionIcon from "../../public/icons/edit.png"
@@ -16,54 +16,60 @@ import FoodHistoryIcon from "../../public/icons/history.png"
 const UserProfile: React.FC = () => {
     const navigate = useNavigate()
     const { id } = useParams()
-    
+
+
+    const handleFoodPrefs = () => {
+        navigate("food-prefs")
+    }
+
+    const handleFoodHistory = () => {
+        navigate("food-history")
+    }
+
+    const optionsUser = [
+        {name: "Preferencias alimenticias", function: handleFoodPrefs, icon: FoodPrefsIcon},
+        {name: "Historial de alimentos", function: handleFoodHistory, icon: FoodHistoryIcon},
+        {name: "Preferencias alimenticias", function: handleFoodPrefs, icon: FoodPrefsIcon},
+        {name: "Historial de alimentos", function: handleFoodHistory, icon: FoodHistoryIcon},
+        {name: "Preferencias alimenticias", function: handleFoodPrefs, icon: FoodPrefsIcon},
+        {name: "Historial de alimentos", function: handleFoodHistory, icon: FoodHistoryIcon},
+        {name: "Preferencias alimenticias", function: handleFoodPrefs, icon: FoodPrefsIcon},
+        {name: "Historial de alimentos", function: handleFoodHistory, icon: FoodHistoryIcon},
+    ]
 
     return <Grid container display="flex" 
-            flexDirection="column" 
-            justifyContent="space-between" 
-            alignItems="center" 
-            sx={{width: "100vw", maxWidth:"500px", gap:"10px"}}>
-                <Box sx={{
-                    display: "flex",
-                    width: "75%",
-                    justifyContent: "space-between",
-                }}>
-                    <Button component={Link} to={"food-prefs"} 
-                        sx={{display: "flex", 
-                            flexDirection: "column", 
-                            alignItems: "center", 
-                            width: "50%", 
-                            textTransform: "none", 
-                            fontWeight: "bold"}}
-                    >
-                        <Box
-                            component="img"
-                            sx={{
-                            maxHeight: { xs: 90, md: 150 },
-                            }}
-                            alt="preferencias alimenticias"
-                            src={FoodPrefsIcon}
-                        />
-                        Preferencias alimenticias
-                    </Button>
-                    <Button sx={{display: "flex", 
-                        flexDirection: "column", 
-                        alignItems: "center", 
-                        width: "50%", 
-                        textTransform: "none", 
-                        fontWeight: "bold"}}>
-                        <Box
-                            component="img"
-                            sx={{
-                            maxHeight: { xs: 90, md: 150 },
-                            }}
-                            alt="Historial de alimentos"
-                            src={FoodHistoryIcon}
-                        />
-                        Historial de alimentos
-                    </Button>
+                flexDirection="row" 
+                justifyContent="space-evenly"
+                alignItems="stretch"
+                sx={{width: "100vw", maxWidth:"500px", gap:"5px", flexWrap: "wrap", pb: 7}}
+            >
+                {optionsUser.map((option) => (
+                <Button variant='dashed' onClick={option.function} 
+                sx={{display: "flex", 
+                    flexDirection: "column", 
+                    alignItems: "center", 
+                    justifyContent: "stretch",
+                    width: "45%", 
+                    fontWeight: "bold",
+                }}
+                > 
+                    <Box width="70%">
+                    <Box
+                        component="img"
+                        sx={{
+                            width: "100%"
+                        }}
+                        alt={option.name}
+                        src={option.icon}
+                    />
+                    </Box>
                     
-                </Box>
+                    <Typography   fontFamily={"Montserrat"} color={"primary.dark"}>
+                        {option.name}
+                    </Typography>
+                </Button>
+            ))}
+                
             
             </Grid>
   
