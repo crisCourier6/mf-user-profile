@@ -26,15 +26,14 @@ const UserProfile: React.FC = () => {
         navigate("food-history")
     }
 
+    const handleFoodDiary = () => {
+        navigate("food-diary")
+    }
+
     const optionsUser = [
         {name: "Preferencias alimenticias", function: handleFoodPrefs, icon: FoodPrefsIcon},
         {name: "Historial de alimentos", function: handleFoodHistory, icon: FoodHistoryIcon},
-        {name: "Preferencias alimenticias", function: handleFoodPrefs, icon: FoodPrefsIcon},
-        {name: "Historial de alimentos", function: handleFoodHistory, icon: FoodHistoryIcon},
-        {name: "Preferencias alimenticias", function: handleFoodPrefs, icon: FoodPrefsIcon},
-        {name: "Historial de alimentos", function: handleFoodHistory, icon: FoodHistoryIcon},
-        {name: "Preferencias alimenticias", function: handleFoodPrefs, icon: FoodPrefsIcon},
-        {name: "Historial de alimentos", function: handleFoodHistory, icon: FoodHistoryIcon},
+        {name: "Diario alimenticio", function: handleFoodDiary, icon: FoodDiaryIcon},
     ]
 
     return <Grid container display="flex" 
