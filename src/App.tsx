@@ -11,7 +11,6 @@ function App() {
       <Router>
           <Routes>
               <Route path="/profile" element={<UserProfile />}/>
-              <Route path="/prefs" element={<UserFoodPreferences />}/>
           </Routes>
         
       </Router>

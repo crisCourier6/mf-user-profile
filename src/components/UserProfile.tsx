@@ -1,16 +1,10 @@
 import React from "react";
-import { Button, Box, Alert, Paper, Grid, Typography} from '@mui/material';
-import { useNavigate, useParams, Link } from 'react-router-dom';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import FoodPrefsIcon from "../../public/icons/food-prefs.png"
-import FoodDiaryIcon from "../../public/icons/diary.png"
-import CommentsIcon from "../../public/icons/comments.png"
-import FoodEditionIcon from "../../public/icons/edit.png"
-import MeasurementsIcon from "../../public/icons/graph.png"
-import LikesIcon from "../../public/icons/thumbs_up.png"
-import DislikesIcon from "../../public/icons/thumbs_down.png"
-import FoodHistoryIcon from "../../public/icons/history.png"
+import { Button, Box, Grid, Typography} from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
+import FoodPrefsIcon from "../svgs/FoodPrefsIcon";
+import HistoryIcon from "../svgs/HistoryIcon";
+import FoodEditIcon from "../svgs/FoodEditIcon";
+import DiaryIcon from "../svgs/DiaryIcon";
 
 
 const UserProfile: React.FC = () => {
@@ -30,40 +24,39 @@ const UserProfile: React.FC = () => {
         navigate("food-diary")
     }
 
+    const handleFoodEdits = () => {
+        navigate("food-edits")
+    }
+
     const optionsUser = [
-        {name: "Preferencias alimenticias", function: handleFoodPrefs, icon: FoodPrefsIcon},
-        {name: "Historial de alimentos", function: handleFoodHistory, icon: FoodHistoryIcon},
-        {name: "Diario alimenticio", function: handleFoodDiary, icon: FoodDiaryIcon},
+        {name: "Preferencias alimenticias", function: handleFoodPrefs, icon: <FoodPrefsIcon width={"100%"} height={"auto"}/>},
+        {name: "Historial de alimentos", function: handleFoodHistory, icon: <HistoryIcon width={"100%"} height={"auto"}/>},
+        {name: "Diario alimenticio", function: handleFoodDiary, icon: <DiaryIcon width={"100%"} height={"auto"}/>},
+        {name: "Aportes", function: handleFoodEdits, icon: <FoodEditIcon width={"100%"} height={"auto"}/>},
     ]
 
     return <Grid container display="flex" 
                 flexDirection="row" 
-                justifyContent="space-evenly"
+                justifyContent="space-around"
                 alignItems="stretch"
-                sx={{width: "100vw", maxWidth:"500px", gap:"5px", flexWrap: "wrap", pb: 7}}
+                sx={{width: "100vw", maxWidth:"600px", gap:"5px", flexWrap: "wrap", pb: 7}}
             >
                 {optionsUser.map((option) => (
-                <Button variant='dashed' onClick={option.function} 
+                <Button variant='dashed' key={option.name} onClick={option.function} 
                 sx={{display: "flex", 
                     flexDirection: "column", 
                     alignItems: "center", 
                     justifyContent: "stretch",
-                    width: "45%", 
+                    width: "40%", 
+                    maxWidth: "200px", 
                     fontWeight: "bold",
                 }}
                 > 
                     <Box width="70%">
-                    <Box
-                        component="img"
-                        sx={{
-                            width: "100%"
-                        }}
-                        alt={option.name}
-                        src={option.icon}
-                    />
+                        {option.icon}
                     </Box>
                     
-                    <Typography   fontFamily={"Montserrat"} color={"primary.dark"}>
+                    <Typography variant='subtitle1' sx={{fontSize:{xs: 12, sm:18}, fontStyle: "bold"}}>
                         {option.name}
                     </Typography>
                 </Button>

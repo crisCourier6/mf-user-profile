@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from "../api";
 import { useEffect, useState } from 'react';
 import { Allergen } from "../interfaces/allergen";
 
@@ -8,9 +8,9 @@ const UserFoodPreferencesMini: React.FC = () => {
     const navigate = useNavigate()
     const id = window.localStorage.id
     const [userFoodPrefs, setUserFoodPrefs] = useState<Allergen[]>([]) 
-    const url = "http://192.168.100.6:8080/profile/" + id + "/allergens"
+    const url = "/profile/" + id + "/allergens"
     useEffect(()=>{
-        axios.get(url, {
+        api.get(url, {
             withCredentials: true,
              headers: {
                  Authorization: "Bearer " + window.localStorage.token

@@ -1,25 +1,24 @@
 import React from "react";
 import { Button, Box, Alert, Paper, Grid, Switch, Snackbar, SnackbarCloseReason, AppBar, Toolbar, Typography} from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import api from "../api";
 import { useEffect, useState } from 'react';
 import { Allergen } from "../interfaces/allergen";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import ImagesAllergens from "../images/ImagesAllergens";
 
 const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarVisible }) => {
-    const navigate = useNavigate()
     const { id } = useParams()
     const [userFoodPrefs, setUserFoodPrefs] = useState<Allergen[]>([]) 
     const [allergens, setAllergens] = useState<Allergen[]>([])
     const [sending, setSending] = useState(false)
     const [noChanges, setNoChanges] = useState(true)
     const [successOpen, setSuccessOpen] = useState(false)
-    const url = "http://192.168.100.6:8080/profile/" + id + "/allergens"
-    const url2 = "http://192.168.100.6:8080/profile/allergens"
+    const url = "/profile/" + id + "/allergens"
+    const url2 = "/profile/allergens"
     useEffect(()=>{
-        
-        axios.get(url, {
+        document.title = "Mis preferencias alimenticias - EyesFood";
+        api.get(url, {
             withCredentials: true,
              headers: {
                  Authorization: "Bearer " + window.localStorage.token
@@ -32,7 +31,7 @@ const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarV
                 userPrefs.push(allergen.id)
             }
             window.localStorage.setItem("food-prefs", userPrefs.toString())
-            axios.get(url2, {
+            api.get(url2, {
                 withCredentials: true,
                 headers: {
                     Authorization: "Bearer " + window.localStorage.token
@@ -91,7 +90,7 @@ const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarV
             }
             
         }
-        axios.post(url, { allergenIdList: allergenIdList }, {
+        api.post(url, { allergenIdList: allergenIdList }, {
             withCredentials: true,
              headers: {
                  Authorization: "Bearer " + window.localStorage.token
@@ -111,10 +110,10 @@ const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarV
     }
 
     return <Grid container display="flex" 
-            flexDirection="row" 
+            flexDirection="column" 
             justifyContent="center"
-            alignItems="stretch"
-            sx={{width: "100vw", maxWidth:"500px", gap:"5px", flexWrap: "wrap", pb: 7}}>
+            alignItems="center"
+            sx={{width: "100vw", maxWidth:"1000px", gap:"5px", flexWrap: "wrap", pb: 7}}>
                 <Box 
                 sx={{
                     display: "flex",
@@ -149,25 +148,32 @@ const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarV
                     flexDirection: "row", 
                     alignItems: "center",
                     width: "90%", 
+                    maxWidth: "500px",
                     border: "5px solid",
                     borderColor: "primary.dark",
-                    bgcolor: "primary.main",
+                    bgcolor: "white",
                     color: "primary.contrastText"}}>
                         <InfoOutlinedIcon sx={{height:"100%", bgcolor: "white", color:"primary.main", px:"5px"}}/>
-                        <Typography textAlign="justify" fontWeight="bold" fontSize={13} fontFamily="Montserrat" sx={{padding:1}}>
+                        <Typography textAlign="justify" fontWeight="bold" fontSize={13} fontFamily="Montserrat" sx={{padding:1, bgcolor:"primary.main"}}>
                             Selecciona los <span style={{color: "orange"}}> alérgenos que deseas evitar </span> 
                             para que te alertemos de su presencia cuando 
                             veas el perfil de un alimento.
                         </Typography>
 
                 </Paper>
-                
-                {allergens.map(allergen => {
+                <Grid container display="flex" 
+                flexDirection="row" 
+                justifyContent="space-around"
+                alignItems="stretch"
+                sx={{width: "100%", gap:"5px", flexWrap: "wrap"}}
+                >
+                    {allergens.map(allergen => {
                         return (
                             <Box key={allergen.id} sx={{
                                 display: "flex",
                                 flexDirection: "column",
-                                width: "30%",
+                                width: "25%",
+                                maxWidth: "150px",
                                 justifyContent: "stretch",
                                 alignItems: "center", 
                                 py:1
@@ -175,7 +181,7 @@ const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarV
                                 <Box
                                     component="img"
                                     sx={{
-                                    maxHeight: { xs: 40, md: 80, flexGrow: 1},
+                                    width: "50%"
                                     }}
                                     alt={allergen.name}
                                     src={ImagesAllergens[allergen.id]?ImagesAllergens[allergen.id]:null}
@@ -196,13 +202,17 @@ const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarV
                                             sx={{color: "red", alignItems: "center", alignContent: "flex-end"}} 
                                             size="small"
                                             onChange={handleSwitchChange}
-                                            disabled={sending}></Switch>
+                                            disabled={sending}
+                                    />
                                 </Box>
                                 
                             </Box>           
                         )
 
-                })}
+                    })}
+                </Grid>
+                
+                
                 <AppBar position="fixed" 
                         sx={{
                         // display: "flex",
