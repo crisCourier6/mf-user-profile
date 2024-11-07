@@ -8,7 +8,7 @@ import UserFoodPreferences from "./components/UserFoodPreferences";
 function App() {
   return (
     <div className="App">
-      <Router>
+      <Router basename="mf-user-profile">
           <Routes>
               <Route path="/profile" element={<UserProfile />}/>
           </Routes>
