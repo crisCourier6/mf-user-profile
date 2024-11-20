@@ -9,8 +9,6 @@ import DiaryIcon from "../svgs/DiaryIcon";
 
 const UserProfile: React.FC = () => {
     const navigate = useNavigate()
-    const { id } = useParams()
-
 
     const handleFoodPrefs = () => {
         navigate("food-prefs")

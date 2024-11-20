@@ -9,7 +9,7 @@ import ImagesAllergens from "../images/ImagesAllergens";
 
 const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarVisible }) => {
     const { id } = useParams()
-    const [userFoodPrefs, setUserFoodPrefs] = useState<Allergen[]>([]) 
+    // const [userFoodPrefs, setUserFoodPrefs] = useState<Allergen[]>([]) 
     const [allergens, setAllergens] = useState<Allergen[]>([])
     const [sending, setSending] = useState(false)
     const [noChanges, setNoChanges] = useState(true)
@@ -25,7 +25,7 @@ const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarV
              }
         })
         .then((response)=>{
-            setUserFoodPrefs(response.data)   
+            // setUserFoodPrefs(response.data)   
             let userPrefs = []
             for (var allergen of response.data){
                 userPrefs.push(allergen.id)

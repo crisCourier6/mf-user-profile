@@ -5,9 +5,7 @@ import { useEffect, useState } from 'react';
 import { Allergen } from "../interfaces/allergen";
 
 const UserFoodPreferencesMini: React.FC = () => {
-    const navigate = useNavigate()
     const id = window.localStorage.id
-    const [userFoodPrefs, setUserFoodPrefs] = useState<Allergen[]>([]) 
     const url = "/profile/" + id + "/allergens"
     useEffect(()=>{
         api.get(url, {
@@ -17,7 +15,7 @@ const UserFoodPreferencesMini: React.FC = () => {
              }
         })
         .then((response)=>{
-            setUserFoodPrefs(response.data)   
+            //setUserFoodPrefs(response.data)   
             let userPrefs = []
             for (var allergen of response.data){
                 userPrefs.push(allergen.id)
