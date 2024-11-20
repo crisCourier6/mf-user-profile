@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Box, Alert, Paper, Grid, Switch, Snackbar, SnackbarCloseReason, AppBar, Toolbar, Typography} from '@mui/material';
 import { useParams } from 'react-router-dom';
 import api from "../api";
-import { useEffect, useState } from 'react';
 import { Allergen } from "../interfaces/allergen";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import ImagesAllergens from "../images/ImagesAllergens";
@@ -27,7 +26,7 @@ const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarV
         .then((response)=>{
             // setUserFoodPrefs(response.data)   
             let userPrefs = []
-            for (var allergen of response.data){
+            for (let allergen of response.data){
                 userPrefs.push(allergen.id)
             }
             window.localStorage.setItem("food-prefs", userPrefs.toString())
@@ -40,8 +39,8 @@ const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarV
             .then((response2)=>{
                 setAllergens(response2.data)     
                 let newAllergens:Allergen[] = []
-                for (var allergen of response2.data){
-                    for (var pref of response.data){
+                for (let allergen of response2.data){
+                    for (let pref of response.data){
                         if (allergen.name === pref.name){
                             allergen.selected = true
                         }
@@ -84,7 +83,7 @@ const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarV
     const handleSubmit = () => {
         setSending(true)
         let allergenIdList = []
-        for (var allergen of allergens){
+        for (let allergen of allergens){
             if(allergen.selected){
                 allergenIdList.push(allergen.id)
             }

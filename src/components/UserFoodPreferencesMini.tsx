@@ -1,8 +1,5 @@
-import React from "react";
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from "react";
 import api from "../api";
-import { useEffect, useState } from 'react';
-import { Allergen } from "../interfaces/allergen";
 
 const UserFoodPreferencesMini: React.FC = () => {
     const id = window.localStorage.id
@@ -17,7 +14,7 @@ const UserFoodPreferencesMini: React.FC = () => {
         .then((response)=>{
             //setUserFoodPrefs(response.data)   
             let userPrefs = []
-            for (var allergen of response.data){
+            for (let allergen of response.data){
                 userPrefs.push(allergen.id)
             }
             window.localStorage.setItem("food-prefs", userPrefs.toString())

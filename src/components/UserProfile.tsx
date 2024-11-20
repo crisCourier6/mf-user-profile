@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Box, Grid, Typography} from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import FoodPrefsIcon from "../svgs/FoodPrefsIcon";
 import HistoryIcon from "../svgs/HistoryIcon";
 import FoodEditIcon from "../svgs/FoodEditIcon";
