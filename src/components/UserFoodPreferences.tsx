@@ -8,6 +8,7 @@ import ImagesAllergens from "../images/ImagesAllergens";
 
 const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarVisible }) => {
     const { id } = useParams()
+    const token = window.sessionStorage.getItem("token") || window.localStorage.getItem("token")
     // const [userFoodPrefs, setUserFoodPrefs] = useState<Allergen[]>([]) 
     const [allergens, setAllergens] = useState<Allergen[]>([])
     const [sending, setSending] = useState(false)
@@ -20,7 +21,7 @@ const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarV
         api.get(url, {
             withCredentials: true,
              headers: {
-                 Authorization: "Bearer " + window.localStorage.token
+                 Authorization: "Bearer " + token
              }
         })
         .then((response)=>{
@@ -29,11 +30,16 @@ const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarV
             for (let allergen of response.data){
                 userPrefs.push(allergen.id)
             }
-            window.localStorage.setItem("food-prefs", userPrefs.toString())
+            if (window.sessionStorage.getItem("token")){
+                window.sessionStorage.setItem("food-prefs", userPrefs.toString())
+            }
+            else{
+                window.localStorage.setItem("food-prefs", userPrefs.toString())
+            }
             api.get(url2, {
                 withCredentials: true,
                 headers: {
-                    Authorization: "Bearer " + window.localStorage.token
+                    Authorization: "Bearer " + token
                 }
             })
             .then((response2)=>{
@@ -92,11 +98,16 @@ const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarV
         api.post(url, { allergenIdList: allergenIdList }, {
             withCredentials: true,
              headers: {
-                 Authorization: "Bearer " + window.localStorage.token
+                 Authorization: "Bearer " + token
              }
         })
         .then(response => {
-            window.localStorage.setItem("food-prefs", allergenIdList.toString())
+            if (window.sessionStorage.getItem("token")){
+                window.sessionStorage.setItem("food-prefs", allergenIdList.toString())
+            }
+            else{
+                window.localStorage.setItem("food-prefs", allergenIdList.toString())
+            }
             setSending(false)
             setSuccessOpen(true)
             setNoChanges(true)
