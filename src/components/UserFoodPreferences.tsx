@@ -54,7 +54,6 @@ const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarV
                     }
                     newAllergens.push(allergen)
                 }
-                console.log(newAllergens)
                 setAllergens(newAllergens)
             }) 
         })
