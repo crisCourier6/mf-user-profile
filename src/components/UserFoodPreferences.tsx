@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Box, Alert, Paper, Grid, Switch, Snackbar, SnackbarCloseReason, AppBar, Toolbar, Typography} from '@mui/material';
+import { Button, Box, Alert, Paper, Grid, Switch, Snackbar, SnackbarCloseReason, AppBar, Toolbar, Typography, CircularProgress} from '@mui/material';
 import { useParams } from 'react-router-dom';
 import api from "../api";
 import { Allergen } from "../interfaces/allergen";
@@ -221,34 +221,30 @@ const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarV
                     })}
                 </Grid>
                 
-                
-                <AppBar position="fixed" 
-                        sx={{
-                        // display: "flex",
-                        // flexDirection: "row",
-                        // flexWrap: "nowrap",
-                        // justifyContent: "space-around",
-                        // alignItems: "center",
-                        bgcolor: noChanges?"gray":"secondary.main",
-                        color: noChanges?"primary.main":"secondary.main",
-                        width: "100%",
-                        top: 'auto', 
-                        bottom: 0 
-                        }}
-                        >
-                        <Toolbar sx={{display: "flex", justifyContent: "center"}}>
-                            <Button variant="text" 
-                                    onClick={handleSubmit} 
-                                    disabled={noChanges}
-                                    sx={{
-                                        fontWeight: "bold",
-                                        fontSize: 16,
-                                    }}
-                            >
-                                Guardar cambios
-                            </Button> 
-                        </Toolbar>
-                </AppBar> 
+                <Button 
+                variant="text" 
+                onClick={handleSubmit} 
+                disabled={noChanges || sending}
+                sx={{
+                    position: "fixed", 
+                    bottom: 0, 
+                    left: 0, 
+                    right: 0, 
+                    bgcolor: noChanges || sending ? "gray" : "secondary.main", 
+                    color: noChanges || sending ? "primary.main" : "secondary.contrastText",
+                    fontWeight: "bold", 
+                    fontSize: 16,
+                    width: "100%", 
+                    textAlign: "center",
+                    borderRadius: 0,
+                    py: 1, // Adds vertical padding
+                }}
+                >
+                {sending
+                    ? <>Guardando...</>
+                    : <>Guardar cambios</>
+                }
+                </Button>
 
                 <Snackbar
                     open = {successOpen}
