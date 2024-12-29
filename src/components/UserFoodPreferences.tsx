@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button, Box, Alert, Paper, Grid, Switch, Snackbar, SnackbarCloseReason, AppBar, Toolbar, Typography, CircularProgress} from '@mui/material';
+import { Button, Box, Alert, Paper, Grid, Switch, Snackbar, SnackbarCloseReason, AppBar, Toolbar, Typography, CircularProgress, Checkbox} from '@mui/material';
 import { useParams } from 'react-router-dom';
 import api from "../api";
 import { Allergen } from "../interfaces/allergen";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import ImagesAllergens from "../images/ImagesAllergens";
+import NavigateBack from "./NavigateBack";
 
 const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarVisible }) => {
     const { id } = useParams()
@@ -14,6 +15,9 @@ const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarV
     const [sending, setSending] = useState(false)
     const [noChanges, setNoChanges] = useState(true)
     const [successOpen, setSuccessOpen] = useState(false)
+    const usedAllergens = ["en:gluten", "en:milk", "en:eggs", "en:nuts", "en:peanuts", "en:sesame-seeds", 
+                            "en:soybeans", "en:celery", "en:mustard", "en:lupin", "en:fish", "en:crustaceans", 
+                            "en:molluscs", "en:sulphur-dioxide-and-sulphites"]
     const url = "/profile/" + id + "/allergens"
     const url2 = "/profile/allergens"
     useEffect(()=>{
@@ -52,7 +56,10 @@ const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarV
                         }
                         
                     }
-                    newAllergens.push(allergen)
+                    if (usedAllergens.includes(allergen.id)){
+                        newAllergens.push(allergen)
+                    }
+                    
                 }
                 setAllergens(newAllergens)
             }) 
@@ -126,7 +133,7 @@ const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarV
                 <Box 
                 sx={{
                     display: "flex",
-                    flexDirection: "column",
+                    flexDirection: "row",
                     justifyContent: "center",
                     alignItems: "center",
                     maxWidth: "500px",
@@ -142,17 +149,21 @@ const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarV
                     borderLeft: "5px solid",
                     borderRight: "5px solid",
                     borderColor: "secondary.main",
+                    color: "primary.contrastText",
                     boxSizing: "border-box"
                   }}
                 >
-                    <Typography variant={isAppBarVisible?'h5':"h6"} width="100%" sx={{py:0.5}} color= "primary.contrastText">
-                        Mis preferencias alimenticias
-                    </Typography>
-                    <Typography variant="subtitle1"  width="100%" sx={{py:0.5, display: isAppBarVisible?"none":"block"}} color= "warning.main">
-                        Selecciona los alérgenos que deseas evitar
-                    </Typography>
+                    <Box sx={{display: "flex", flex: 1}}>
+                        <NavigateBack/>
+                    </Box>
+                    <Box sx={{display: "flex", flex: 6}}>
+                        <Typography variant='h6' width="100%"  color="primary.contrastText" sx={{py:1}}>
+                            Preferencias alimenticias
+                        </Typography>
+                    </Box>
+                    <Box sx={{display: "flex", flex: 1}}></Box>
                 </Box>
-                <Paper 
+                {/* <Paper 
                 sx={{display: "flex", 
                     flexDirection: "row", 
                     alignItems: "center",
@@ -169,83 +180,79 @@ const UserFoodPreferences: React.FC<{ isAppBarVisible: boolean }> = ({ isAppBarV
                             veas el perfil de un alimento.
                         </Typography>
 
-                </Paper>
+                </Paper> */}
                 <Grid container display="flex" 
-                flexDirection="row" 
-                justifyContent="space-around"
-                alignItems="stretch"
-                sx={{width: "100%", gap:"5px", flexWrap: "wrap"}}
+                flexDirection="column" 
+                justifyContent="center"
+                alignItems="flex-start"
+                sx={{width: "100%", maxWidth: "500px", gap:"5px", flexWrap: "wrap"}}
                 >
+                    <Typography variant="h6" sx={{ml: 1, mt:1}}>
+                        Prefiero alimentos:
+                    </Typography>
                     {allergens.map(allergen => {
                         return (
-                            <Box key={allergen.id} sx={{
-                                display: "flex",
-                                flexDirection: "column",
-                                width: "25%",
-                                maxWidth: "150px",
-                                justifyContent: "stretch",
-                                alignItems: "center", 
-                                py:1
-                            }}>  
+                            <Box 
+                                key={allergen.id} 
+                                sx={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    width: "100%",
+                                    maxWidth: "400px",
+                                    justifyContent: "flex-start",
+                                    alignItems: "center", 
+                                    py: 1
+                                }}
+                                >  
+                                <Checkbox 
+                                    id={allergen.id.toString()}
+                                    checked={!!allergen.selected}
+                                    onChange={handleSwitchChange}
+                                    disabled={sending}
+                                    size="small"
+                                />
+                                <Typography variant="subtitle1" textAlign={"left"}>
+                                    Sin {allergen.name}
+                                </Typography>
                                 <Box
                                     component="img"
                                     sx={{
-                                    width: "50%"
+                                        height: "24px",
+                                        width: "auto",
+                                        pl: 1
                                     }}
                                     alt={allergen.name}
-                                    src={ImagesAllergens[allergen.id]?ImagesAllergens[allergen.id]:null}
+                                    src={ImagesAllergens[allergen.id] ? ImagesAllergens[allergen.id] : null}
                                 />
-                                <Box key={allergen.id} sx={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    justifyContent: "space-evenly",
-                                    alignItems: "center", 
-                                    height: "100%"
-                                }}> 
-                                    <Typography fontSize={14}>
-                                        {allergen.name}
-                                    </Typography>
-                                    
-                                    <Switch id={allergen.id} 
-                                            checked={!!allergen.selected} 
-                                            sx={{color: "red", alignItems: "center", alignContent: "flex-end"}} 
-                                            size="small"
-                                            onChange={handleSwitchChange}
-                                            disabled={sending}
-                                    />
-                                </Box>
-                                
-                            </Box>           
-                        )
-
+                                </Box>           
+                        );
                     })}
+                    
                 </Grid>
-                
-                <Button 
-                variant="text" 
-                onClick={handleSubmit} 
-                disabled={noChanges || sending}
-                sx={{
-                    position: "fixed", 
-                    bottom: 0, 
-                    left: 0, 
-                    right: 0, 
-                    bgcolor: noChanges || sending ? "gray" : "secondary.main", 
-                    color: noChanges || sending ? "primary.main" : "secondary.contrastText",
-                    fontWeight: "bold", 
-                    fontSize: 16,
-                    width: "100%", 
-                    textAlign: "center",
-                    borderRadius: 0,
-                    py: 1, // Adds vertical padding
-                }}
-                >
-                {sending
-                    ? <>Guardando...</>
-                    : <>Guardar cambios</>
-                }
-                </Button>
-
+                    <Button 
+                    variant="text" 
+                    onClick={handleSubmit} 
+                    disabled={noChanges || sending}
+                    sx={{
+                        position: "fixed", 
+                        bottom: 0, 
+                        left: 0, 
+                        right: 0, 
+                        bgcolor: noChanges || sending ? "gray" : "secondary.main", 
+                        color: noChanges || sending ? "primary.main" : "secondary.contrastText",
+                        fontWeight: "bold", 
+                        fontSize: 16,
+                        width: "100%", 
+                        textAlign: "center",
+                        borderRadius: 0,
+                        py: 1, // Adds vertical padding
+                    }}
+                    >
+                    {sending
+                        ? <>Guardando...</>
+                        : <>Guardar cambios</>
+                    }
+                    </Button>
                 <Snackbar
                     open = {successOpen}
                     autoHideDuration={3000}
